@@ -20,7 +20,8 @@ INSTALLED_APPS = [
     'graphene_django',
     
     #app's
-    'ingredients'
+    'ingredients',
+    'musics'
 ]
 
 MIDDLEWARE = [

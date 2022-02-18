@@ -2,6 +2,7 @@ import graphene
 from graphene_django import DjangoObjectType
 
 from ingredients.models import Category, Ingredient, Teste
+from musics.models import MusicsModel
 
 class CategoryType(DjangoObjectType):
     class Meta:
@@ -18,11 +19,18 @@ class TesteType(DjangoObjectType):
         model = Teste
         fields = "__all__"
 
+class MusicType(DjangoObjectType):
+    class Meta:
+        model = MusicsModel
+        fields = "__all__"
+
 class Query(graphene.ObjectType):
     all_ingredients = graphene.List(IngredientType)
     category_by_name = graphene.Field(CategoryType, name=graphene.String(required=True))
     teste = graphene.List(TesteType)
     teste_by_id = graphene.Field(TesteType, id=graphene.String())
+    musics = graphene.List(MusicType)
+    musics_by_id = graphene.Field(MusicType, id=graphene.String())
 
     def resolve_all_ingredients(root, info):
         return Ingredient.objects.select_related("category").all()
@@ -40,6 +48,14 @@ class Query(graphene.ObjectType):
     def resolve_teste_by_id(root, info, id):
         # Querying a single question
         return Teste.objects.get(pk=id)
+    
+    def resolve_musics(root, info, **kwargs):
+        # Querying a list
+        return MusicsModel.objects.all()
+
+    def resolve_musics_by_id(root, info, id):
+        # Querying a single question
+        return MusicsModel.objects.get(pk=id)
         
 
 
